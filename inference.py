@@ -2,19 +2,19 @@ from env import TrafficEnv
 
 env = TrafficEnv()
 
-roads = ["North", "South", "East", "West"]
+tasks = ["easy", "medium", "hard"]
 
-for level in ["easy", "medium", "hard"]:
-    print("\n===== LEVEL:", level, "=====")
+for task in tasks:
+    print(f"[START] task={task}", flush=True)
 
-    state = env.reset(level)
+    state = env.reset(task)
 
-    # Choose best road (your smart logic)
-    values = list(state.values())
-    action = values.index(max(values))
+    # choose best action
+    best_action = max(state, key=state.get)
+    action_index = env.roads.index(best_action)
 
-    next_state, reward, done = env.step(action)
+    next_state, reward, done = env.step(action_index)
 
-    print("Traffic State:", state)
-    print("Selected Road:", roads[action])
-    print("Reward:", reward)
+    print(f"[STEP] step=1 reward={reward}", flush=True)
+
+    print(f"[END] task={task} score={reward} steps=1", flush=True)
