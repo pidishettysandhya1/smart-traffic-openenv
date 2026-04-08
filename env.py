@@ -1,4 +1,7 @@
 import random
+from fastapi import FastAPI
+
+app = FastAPI()
 
 class TrafficEnv:
 
@@ -33,3 +36,23 @@ class TrafficEnv:
 
     def state(self):
         return self.current_state
+
+
+# -------- API PART (for Phase 1 runtime) --------
+
+env = TrafficEnv()
+
+@app.post("/reset")
+def reset(level: str = "easy"):
+    return {"state": env.reset(level)}
+
+@app.post("/step")
+def step():
+    best_action = max(env.current_state, key=env.current_state.get)
+    action_index = env.roads.index(best_action)
+    state, reward, done = env.step(action_index)
+    return {"reward": reward}
+
+@app.get("/state")
+def state():
+    return {"state": env.state()}
