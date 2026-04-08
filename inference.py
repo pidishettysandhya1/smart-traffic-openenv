@@ -37,4 +37,5 @@ for task in tasks:
     _, reward, _ = env.step(action_index)
 
     print(f"[STEP] step=1 reward={reward}", flush=True)
-    print(f"[END] task={task} score={reward} steps=1", flush=True)
+    score = 0.5 if reward == 1 else 0.1
+    print(f"[END] task={task} score={score} steps=1", flush=True)
