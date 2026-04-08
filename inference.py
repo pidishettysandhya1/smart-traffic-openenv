@@ -2,7 +2,7 @@ import os
 from openai import OpenAI
 from env import TrafficEnv
 
-# 🔥 MUST use these env variables (important)
+# MUST use these EXACT env variables
 client = OpenAI(
     base_url=os.environ["API_BASE_URL"],
     api_key=os.environ["API_KEY"]
@@ -17,11 +17,10 @@ for task in tasks:
     state = env.reset(task)
 
     try:
-        prompt = f"Traffic: {state}. Choose best road: North, South, East, West."
+        prompt = f"Traffic state: {state}. Which road is best among North, South, East, West?"
 
-        # 🔥 IMPORTANT: use correct API format
         response = client.chat.completions.create(
-            model="openai/gpt-3.5-turbo",   # ✅ REQUIRED FORMAT
+            model="gpt-3.5-turbo",   # ✅ VERY IMPORTANT (NOT openai/gpt-3.5-turbo)
             messages=[{"role": "user", "content": prompt}],
         )
 
@@ -31,7 +30,7 @@ for task in tasks:
             action = "North"
 
     except Exception as e:
-        # fallback (but still API attempted ✔)
+        # fallback (but API still attempted)
         action = max(state, key=state.get)
 
     action_index = env.roads.index(action)
