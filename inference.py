@@ -9,7 +9,6 @@ for task in tasks:
 
     state = env.reset(task)
 
-    # choose best action
     best_action = max(state, key=state.get)
     action_index = env.roads.index(best_action)
 
